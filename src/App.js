@@ -1,25 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+import PostIcon from '@material-ui/icons/Book';
+import UserIcon from '@material-ui/icons/Group';
+import * as React from "react";
+import { Admin, Resource } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+import { UserList, UserEdit } from './users';
+import { EventList, EventEdit, EventCreate } from './events';
+import Dashboard from './Dashboard';
+import restProvider from 'ra-data-simple-rest';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+
+const App = () => (
+    <Admin dashboard={Dashboard} dataProvider={restProvider('http://localhost:8000')}>
+        <Resource name="events" list={EventList} edit={EventEdit} create={EventCreate} icon={PostIcon} />
+        <Resource name="persons" list={UserList} edit={UserEdit} icon={UserIcon} />
+    </Admin>
+);
 
 export default App;
