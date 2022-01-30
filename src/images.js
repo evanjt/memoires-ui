@@ -8,7 +8,6 @@ import {
     ReferenceArrayInput,
     EditButton,
     Edit,
-    FormDataConsumer,
     Create,
     SimpleForm,
     SimpleList,
@@ -25,14 +24,12 @@ import {
 } from 'react-admin';
 import { useMediaQuery } from '@material-ui/core';
 import ImageField from './ImageField';
-import { makeStyles } from '@material-ui/core/styles';
 
-
-const EventTitle = ({ record }) => {
-    return <span>Event {record ? `"${record.title}"` : ''}</span>;
+const ImageTitle = ({ record }) => {
+    return <span>Image {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const EventList = (props) => {
+export const ImageList = (props) => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
         <List {...props}>
@@ -57,8 +54,8 @@ export const EventList = (props) => {
     );
 }
 
-export const EventEdit = props => (
-    <Edit title={<EventTitle />} {...props}>
+export const ImageEdit = props => (
+    <Edit title={<ImageTitle />} {...props}>
         <SimpleForm>
             <DateTimeInput source="time_start" />
             <DateTimeInput source="time_end" />
@@ -70,32 +67,19 @@ export const EventEdit = props => (
     </Edit>
 );
 
-
-export const EventCreate = props => {
-    const useImageFieldStyles = makeStyles(theme => ({
-        image: { // This will override the style of the <img> inside the <div>
-            width: '100',
-            height: '100',
-        }
-    }));
-    const imageFieldClasses = useImageFieldStyles();
-    return (
+export const ImageCreate = props => (
     <Create {...props}>
         <SimpleForm>
             <ReferenceArrayInput source="owner_id" reference="persons">
-                <SelectInput optionText={p => `[${p.id}] ${p.first_names} ${p.last_names}`} optionValue="id" initialValue={1}/>
+                <SelectInput optionText={p => `[${p.id}] ${p.first_names} ${p.last_names}`} optionValue="id" initialValue="1"/>
+            </ReferenceArrayInput>
+            <TextInput source="title" />
+            <ReferenceArrayInput source="persons" reference="persons">
+                <SelectArrayInput optionText={p => `[${p.id}] ${p.first_names} ${p.last_names}`} optionValue="id"/>
             </ReferenceArrayInput>
             <ImageInput source="pictures" label="Related pictures" accept="image/*">
-                <ImageField source="evanphoto" title="title" classes={imageFieldClasses} />
+                <ImageField source="src" title="title" />
             </ImageInput>
-            <FormDataConsumer>
-            {({ formData, ...rest }) => (
-                <TextInput source="title" initialValue={formData.evanphoto} />
-                )}
-            </FormDataConsumer>
-            <ReferenceArrayInput source="persons" reference="persons">
-                <SelectArrayInput optionText={p => `[${p.id}] ${p.first_names} ${p.last_names}`} optionValue="id" multiple={false}/>
-            </ReferenceArrayInput>
 
             <DateTimeInput source="time_start" />
             <DateTimeInput source="time_end" />
@@ -104,4 +88,4 @@ export const EventCreate = props => {
             <TextInput multiline source="description" />
         </SimpleForm>
     </Create>
-    )};
+);

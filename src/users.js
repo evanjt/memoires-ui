@@ -1,5 +1,5 @@
 import * as React from "react";
-import { List, Datagrid, UrlField, TextField, TextInput, SimpleForm, Edit, DateInput, EmailField, DateField } from 'react-admin';
+import { List, Create, Datagrid, UrlField, TextField, TextInput, SimpleForm, Edit, DateInput, EmailField, DateField } from 'react-admin';
 import MyUrlField from './MyUrlField';
 
 export const UserList = props => (
@@ -20,4 +20,14 @@ export const UserEdit = props => (
             <DateInput source="birth_date" />
         </SimpleForm>
     </Edit>
+);
+
+export const UserCreate = props => (
+    <Create {...props}>
+        <SimpleForm>
+            <TextInput source="first_names" />
+            <TextInput source="last_names" />
+            <DateInput source="birth_date" />
+        </SimpleForm>
+    </Create>
 );
