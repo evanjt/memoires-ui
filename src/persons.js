@@ -2,7 +2,7 @@ import * as React from "react";
 import { List, Create, Datagrid, UrlField, TextField, TextInput, SimpleForm, Edit, DateInput, EmailField, DateField } from 'react-admin';
 import MyUrlField from './MyUrlField';
 
-export const UserList = props => (
+export const PersonList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="first_names" />
@@ -12,7 +12,7 @@ export const UserList = props => (
     </List>
 );
 
-export const UserEdit = props => (
+export const PersonEdit = props => (
     <Edit {...props}>
         <SimpleForm>
             <TextInput source="first_names" />
@@ -22,7 +22,7 @@ export const UserEdit = props => (
     </Edit>
 );
 
-export const UserCreate = props => (
+export const PersonCreate = props => (
     <Create {...props}>
         <SimpleForm>
             <TextInput source="first_names" />
