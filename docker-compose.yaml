@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  traefik:
+    image: traefik:v2.9.6
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+    ports:
+      - "88:80"
+      - "8088:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  memoires-api:
+    build:
+      context: ../memoires-api
+    environment:
+      - DB_HOST=memoires-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=psql
+      - DB_NAME=postgres
+      - DB_PREFIX=postgresql+asyncpg
+    ports:
+      - 8005:8000
+    depends_on:
+      - memoires-db
+    volumes:
+      - ../memoires-api/app:/src/app
+
+  memoires-bff:
+    build:
+      context: ../memoires-bff
+    environment:
+      - MEMOIRES_API_URL=http://memoires-api:8000
+    labels:
+      - "traefik.http.routers.memoires-bff.rule=Host(`memoires`) && PathPrefix(`/api`)"
+      - "traefik.http.services.memoires-bff.loadbalancer.server.port=8000"
+    volumes:
+      - ../memoires-bff/app:/app/app
+    entrypoint: ["uvicorn", "--host=0.0.0.0",
+              "--timeout-keep-alive=0", "app.main:app", "--reload"]
+
+  memoires-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev  # Uses the dockerfile containing yarn dev
+    labels:
+      - "traefik.http.routers.memoires-ui.rule=Host(`memoires`)"
+      - "traefik.http.services.memoires-ui.loadbalancer.server.port=5173"
+    volumes:
+      - ../memoires-ui:/app
+
+  memoires-db:
+    image: postgres:16.1
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=psql
+      - POSTGRES_DB=postgres
+    ports:
+      - 5433:5432
+    volumes:
+      - memoires-db-data:/var/lib/postgresql/data
+
+volumes:
+  memoires-db-data:
