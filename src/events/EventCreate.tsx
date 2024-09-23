@@ -1,30 +1,31 @@
-/* eslint react/jsx-key: off */
-
 import {
     Create,
     SimpleForm,
     TextField,
     TextInput,
     required,
-    DateTimeInput,
-    NumberInput,
-    BooleanInput,
+    useCreate,
+    Toolbar,
+    SaveButton,
+    useRedirect,
+    ReferenceInput,
+    SelectInput,
 } from 'react-admin';
+import { useState } from 'react';
 
-
-const SensorCreate = () => {
+const EventCreate = () => {
 
     return (
-        <Create redirect="list">
-            <SimpleForm >
-            <DateTimeInput source="time_start" />
-            <DateTimeInput source="time_end" />
-            <BooleanInput source="time_continuous" initialValue={false}/>
-            <BooleanInput source="time_confirmed" />
-            <TextInput multiline source="description" />
+        <Create redirect="show">
+            <SimpleForm  >
+                <TextField source="id" />
+                <TextInput source="name" validate={[required()]} />
+                <TextInput source="description" />
+                <TextInput source="owner_id" defaultValue={1}/>
             </SimpleForm>
-        </Create>
+        </Create >
+
     )
 };
 
-export default SensorCreate;
+export default EventCreate;

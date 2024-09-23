@@ -1,26 +1,23 @@
 /* eslint react/jsx-key: off */
 import {
     Edit,
+    ReferenceInput,
+    SelectInput,
     SimpleForm,
     TextInput,
-    required,
-    DateTimeInput,
-    NumberInput,
+    required
 } from 'react-admin';
 
-const SensorEdit = () => {
+const EventEdit = () => {
     return (
-        <Edit>
+        <Edit mutationMode="pessimistic" redirect="show">
             <SimpleForm>
-                <DateTimeInput source="time_start" />
-                <DateTimeInput source="time_end" />
-                <BooleanInput source="time_continuous" />
-                <BooleanInput source="time_confirmed" />
-                <TextInput source="title" />
-                <TextInput multiline source="description" />
+                <TextInput disabled label="Id" source="id" />
+                <TextInput source="title" validate={required()} />
+                <TextInput source="description" />
             </SimpleForm>
         </Edit>
     )
 };
 
-export default SensorEdit;
+export default EventEdit;
