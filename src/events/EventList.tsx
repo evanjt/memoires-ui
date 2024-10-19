@@ -6,45 +6,37 @@ import {
     TopToolbar,
     CreateButton,
     ExportButton,
-    DateField,
-    BooleanField,
+    useRecordContext,
+    FunctionField,
 } from "react-admin";
-import Brightness1TwoToneIcon from '@mui/icons-material/Brightness1TwoTone';
-const SensorListActions = () => {
+// import { LocationFieldAreas } from '../maps/Areas';
+
+const EventListActions = () => {
     const { permissions } = usePermissions();
     return (
         <TopToolbar>
-            {permissions === 'admin' && <><CreateButton /></>}
+             <><CreateButton /></>
             <ExportButton />
         </TopToolbar>
     );
 }
 
 
-const SensorList = () => {
-    const { permissions } = usePermissions();
-
-    // Set to green icon
-    const TrueIcon = () => <Brightness1TwoToneIcon color="success" />;
-    // Set to red icon
-    const FalseIcon = () => <Brightness1TwoToneIcon color="error" />; TrueIcon
-
+export const EventList = () => {
     return (
-        <List disableSyncWithLocation
-            actions={<SensorListActions />}
-            perPage={25}
-        >
-            <Datagrid rowClick="show">
+        <List actions={<EventListActions />} storeKey={false}>
+            <Datagrid rowClick="show" >
                 <TextField source="title" />
-                <DateField source="time_start" />
-                <DateField source="time_end" />
                 <TextField source="description" />
-                <BooleanField source="time_continuous" />
-                <BooleanField source="time_confirmed" />
+                {/* <FunctionField render={record => `${record.sensors.length}`} label="Sensors" />
+                <FunctionField render={record => `${record.plots.length}`} label="Plots" />
+                <FunctionField render={record => `${record.soil_profiles.length}`} label="Soil Profiles" />
+                <FunctionField render={record => `${record.transects.length}`} label="Transects" />
+                <FunctionField render={() => <ColorBox />} label="Project" /> */}
             </Datagrid>
-        </List >
-
-    )
+            {/* <LocationFieldAreas /> */}
+        </List>
+    );
 };
 
-export default SensorList;
+export default EventList;

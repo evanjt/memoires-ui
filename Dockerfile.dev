@@ -1,10 +1,13 @@
-FROM node:20.8.1-alpine as builder
+FROM node:22.2.0-alpine AS builder
 
 # Set the working directory in the container
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-COPY . .
+COPY package.json yarn.lock tsconfig.json vite.config.ts prettier.config.js index.html ./
+COPY ./public/ /app/public/
+COPY ./src/ /app/src/
+RUN yarn install
 
 # Start your Yarn application
-CMD yarn dev
+SHELL ["/bin/sh", "-c"]
+CMD ["yarn", "dev"]
